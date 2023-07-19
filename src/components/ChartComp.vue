@@ -1,48 +1,46 @@
 <template>
-  <div class="container">
-    <div v-if="isLoading" class="has-text-centered">
-      Идет загрузка данных...
-      <my-spinner></my-spinner>
+  <div v-if="isLoading" class="has-text-centered">
+    Идет загрузка данных...
+    <my-spinner></my-spinner>
+  </div>
+  <div class="vChart mb-3" v-show="!isLoading">
+    <canvas ref="ch"></canvas>
+    <div
+      ref="DivTip"
+      class="textChartArea is-vcentered pl-2 pt-2 pb-2 has-text-centered is-size-7"
+    >
+      Данные не определены...
     </div>
-    <div class="vChart" v-show="!isLoading">
-      <canvas ref="ch"></canvas>
-      <div
-        ref="DivTip"
-        class="textChartArea is-vcentered pl-2 pt-2 pb-2 has-text-centered is-size-7"
+    <div class="buttons are-small is-centered pt-2">
+      <button
+        ref="BtnPrev"
+        class="button is-success is-rounded"
+        @click.prevent="MoveBy(-Step)"
       >
-        Данные не определены...
-      </div>
-      <div class="buttons are-small is-centered pt-2">
-        <button
-          ref="BtnPrev"
-          class="button is-success is-rounded"
-          @click.prevent="MoveBy(-Step)"
-        >
-          <span class="icon is-small mr-1">
-            <i class="fas fa-arrow-left"></i>
-          </span>
-          Назад
-        </button>
-        <button
-          ref="BtnNext"
-          class="button is-success is-rounded"
-          @click.prevent="MoveBy(Step)"
-        >
-          Вперед
-          <span class="icon is-small ml-1">
-            <i class="fas fa-arrow-right"></i>
-          </span>
-        </button>
-        <button
-          class="button is-warning is-rounded ml-6"
-          @click.prevent="ScaleAll()"
-        >
-          <span class="icon is-small mr-1">
-            <i class="fas fa-chart-line"></i>
-          </span>
-          Вернуть всё
-        </button>
-      </div>
+        <span class="icon is-small mr-1">
+          <i class="fas fa-arrow-left"></i>
+        </span>
+        Назад
+      </button>
+      <button
+        ref="BtnNext"
+        class="button is-success is-rounded"
+        @click.prevent="MoveBy(Step)"
+      >
+        Вперед
+        <span class="icon is-small ml-1">
+          <i class="fas fa-arrow-right"></i>
+        </span>
+      </button>
+      <button
+        class="button is-warning is-rounded ml-6"
+        @click.prevent="ScaleAll()"
+      >
+        <span class="icon is-small mr-1">
+          <i class="fas fa-chart-line"></i>
+        </span>
+        Вернуть всё
+      </button>
     </div>
   </div>
 </template>

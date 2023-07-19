@@ -1,167 +1,143 @@
 <template>
-  <div class="container">
-    <section class="section" v-if="isErrorLoad">
-      <div class="notification is-danger is-light has-text-centered">
-        Ошибка при загрузке данных... Попробовать еще раз...
-      </div>
-      <div class="control has-text-centered mt-2">
-        <button
-          class="button is-small is-info is-rounded"
-          @click="updateHandler"
-        >
-          <span class="icon is-small mr-1">
-            <i class="fas fa-download"></i>
-          </span>
-          Обновить
-        </button>
-      </div>
-    </section>
+  <section class="section" v-if="isErrorLoad">
+    <div class="notification is-danger is-light has-text-centered">
+      Ошибка при загрузке данных... Попробовать еще раз...
+    </div>
+    <div class="control has-text-centered mt-2">
+      <button class="button is-small is-info is-rounded" @click="updateHandler">
+        <span class="icon is-small mr-1">
+          <i class="fas fa-download"></i>
+        </span>
+        Обновить
+      </button>
+    </div>
+  </section>
 
-    <section class="section pb-0" v-if="!isErrorLoad">
-      <calculate-curs></calculate-curs>
-    </section>
+  <section class="section pb-0" v-if="!isErrorLoad">
+    <calculate-curs></calculate-curs>
+  </section>
 
-    <my-spinner v-if="isLoadVal"></my-spinner>
+  <my-spinner v-if="isLoadVal"></my-spinner>
 
-    <section
-      v-else-if="!isErrorLoad && !isLoadVal"
-      class="section is-fullheight pt-0"
-    >
-      <p class="subtitle">Данные на: {{ valuteDate }}</p>
-      <div class="table-container is-mobile mb-0 is-hidden-mobile">
-        <table class="table has-background-light is-narrow is-bordered">
-          <thead>
-            <tr class="has-background-info">
-              <th class="is-size-7 is-vcentered has-text-primary-light">№/№</th>
-              <th class="is-size-7 is-vcentered has-text-primary-light">
-                Выбрать
-              </th>
-              <th class="has-text-centered">
-                <button
-                  class="button is-link is-small is-rounded"
-                  title="Сортировать"
-                  @click="
-                    () => {
-                      isPrice = true;
-                      isSorted = true;
-                      isCode = !isCode;
-                      sortByCode(isCode);
-                    }
-                  "
-                >
-                  <span class="icon has-text-primary-light is-small">
-                    <i
-                      :class="isCode ? 'fas fa-arrow-up' : 'fas fa-arrow-down'"
-                    ></i>
-                  </span>
+  <section v-else-if="!isErrorLoad && !isLoadVal" class="section pt-0">
+    <p class="subtitle">Данные на: {{ valuteDate }}</p>
 
-                  <span>Код</span>
-                </button>
-              </th>
-              <th class="has-text-centered">
-                <button
-                  class="button is-link is-small is-rounded"
-                  title="Сортировать"
-                  @click="
-                    () => {
-                      isCode = true;
-                      isPrice = true;
-                      isSorted = !isSorted;
-                      sortByName(isSorted);
-                    }
-                  "
-                >
-                  <span class="icon has-text-primary-light is-small">
-                    <i
-                      :class="
-                        isSorted ? 'fas fa-arrow-up' : 'fas fa-arrow-down'
-                      "
-                    ></i>
-                  </span>
-                  <span>Валюта</span>
-                </button>
-              </th>
-              <th class="is-size-7 is-vcentered has-text-primary-light">
-                Номинал
-              </th>
-              <th class="has-text-centered">
-                <button
-                  class="button is-link is-small is-rounded"
-                  title="Сортировать"
-                  @click="
-                    () => {
-                      isCode = true;
-                      isSorted = true;
-                      isPrice = !isPrice;
-                      sortByPrice(isPrice);
-                    }
-                  "
-                >
-                  <span class="icon has-text-primary-light is-small">
-                    <i
-                      :class="isPrice ? 'fas fa-arrow-up' : 'fas fa-arrow-down'"
-                    >
-                    </i>
-                  </span>
-                  <span>Курс</span>
-                </button>
-              </th>
-              <th
-                class="is-size-7 is-vcentered has-text-primary-light has-text-centered"
+    <div class="table-container is-hidden-mobile">
+      <table class="table is-striped is-fullwidth is-narrow">
+        <thead>
+          <tr class="has-background-info">
+            <th class="is-vcentered is-size-7 has-text-white">№/№</th>
+            <th class="is-vcentered is-size-7 has-text-white">Выбрать</th>
+            <th class="is-vcentered">
+              <button
+                class="button is-link is-small is-rounded"
+                title="Сортировать"
+                @click="
+                  () => {
+                    isPrice = true;
+                    isSorted = true;
+                    isCode = !isCode;
+                    sortByCode(isCode);
+                  }
+                "
               >
-                Изм.
-              </th>
-            </tr>
-          </thead>
-        </table>
-      </div>
+                <span class="icon has-text-primary-light is-small">
+                  <i
+                    :class="isCode ? 'fas fa-arrow-up' : 'fas fa-arrow-down'"
+                  ></i>
+                </span>
 
-      <div class="tbl-wrapper is-hidden-mobile">
-        <table class="table is-striped is-narrow is-bordered is-unselectable">
-          <tbody>
-            <tr
-              v-for="(item, i) of sortedValutes"
-              :key="item.ID"
-              :class="sortedValutes[parseInt(i)].Selected ? 'is-selected' : ''"
-            >
-              <td class="is-size-7 is-vcentered">{{ i + 1 }}.</td>
-              <td class="is-size-7 is-vcentered has-text-centered">
-                <input
-                  type="radio"
-                  name="selectVal"
-                  class="is-clickable"
-                  :checked="sortedValutes[parseInt(i)].Selected"
-                  @change="
-                    ($event) => {
-                      // console.log($event.target.checked);
-                      sortedValutes.forEach((item) => (item.Selected = false));
-                      sortedValutes[parseInt(i)].Selected =
-                        $event.target.checked;
-                      setValuteItem(parseInt(i));
-                      //     console.log(sortedValutes[parseInt(i)]);
-                    }
-                  "
-                />
-              </td>
-              <td class="is-size-7 is-vcentered has-text-centered">
-                {{ item.CharCode }}
-              </td>
-              <td class="is-size-7 is-vcentered">{{ item.Name }}</td>
-              <td class="is-size-7 has-text-right is-vcentered">
-                {{ item.Nominal }}
-              </td>
-              <td class="is-size-7 has-text-right is-vcentered">
-                {{ item.Value }}
-              </td>
-              <td class="is-size-7 has-text-right is-vcentered">
-                {{ changeCurs(item) }}
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-  </div>
+                <span>Код</span>
+              </button>
+            </th>
+            <th class="is-vcentered">
+              <button
+                class="button is-link is-small is-rounded"
+                title="Сортировать"
+                @click="
+                  () => {
+                    isCode = true;
+                    isPrice = true;
+                    isSorted = !isSorted;
+                    sortByName(isSorted);
+                  }
+                "
+              >
+                <span class="icon has-text-primary-light is-small">
+                  <i
+                    :class="isSorted ? 'fas fa-arrow-up' : 'fas fa-arrow-down'"
+                  ></i>
+                </span>
+                <span>Валюта</span>
+              </button>
+            </th>
+            <th class="is-vcentered is-size-7 has-text-white">Номинал</th>
+            <th class="is-vcentered">
+              <button
+                class="button is-link is-small is-rounded"
+                title="Сортировать"
+                @click="
+                  () => {
+                    isCode = true;
+                    isSorted = true;
+                    isPrice = !isPrice;
+                    sortByPrice(isPrice);
+                  }
+                "
+              >
+                <span class="icon has-text-primary-light is-small">
+                  <i :class="isPrice ? 'fas fa-arrow-up' : 'fas fa-arrow-down'">
+                  </i>
+                </span>
+                <span>Курс</span>
+              </button>
+            </th>
+            <th class="is-vcentered is-size-7 has-text-white">Изм</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            v-for="(item, i) of sortedValutes"
+            :key="item.ID"
+            :class="sortedValutes[parseInt(i)].Selected ? 'is-selected' : ''"
+          >
+            <td class="is-size-7 is-vcentered">{{ i }}.</td>
+            <td class="is-size-7 is-vcentered has-text-centered">
+              <input
+                type="radio"
+                name="selectVal1"
+                class="is-clickable"
+                :checked="sortedValutes[parseInt(i)].Selected"
+                @change="
+                  ($event) => {
+                    // console.log($event.target.checked);
+                    sortedValutes.forEach((item) => (item.Selected = false));
+                    sortedValutes[parseInt(i)].Selected = $event.target.checked;
+                    // console.log($event.target.checked);
+                    // console.log(sortedValutes[parseInt(i)].Selected);
+                    setValuteItem(parseInt(i));
+                  }
+                "
+              />
+            </td>
+            <td class="is-size-7 is-vcentered has-text-centered">
+              {{ item.CharCode }}
+            </td>
+            <td class="is-size-7 is-vcentered">{{ item.Name }}</td>
+            <td class="is-size-7 has-text-right is-vcentered">
+              {{ item.Nominal }}
+            </td>
+            <td class="is-size-7 has-text-right is-vcentered">
+              {{ item.Value }}
+            </td>
+            <td class="is-size-7 has-text-right is-vcentered">
+              {{ changeCurs(item) }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
 
   <!-- //-------------------------------------------------------------------------- -->
   <section class="section">
@@ -314,7 +290,7 @@ function updateHandler() {
       //sortByName(isSorted);
       valuteDate.value = store.getters["GET_DATE_VALUTES"];
     }
-  }, 500);
+  }, 900);
 }
 
 async function getData(paramUrl) {
@@ -383,98 +359,8 @@ onBeforeMount(() => {
 </script>
 
 <style lang="scss">
-// .table {
-//   min-width: 300px;
-//   th:nth-child(1) {
-//     min-width: 50px;
-//   }
-//   th:nth-child(2) {
-//     min-width: 75px;
-//   }
-//   th:nth-child(3) {
-//     width: 108px;
-//   }
-//   th:nth-child(4) {
-//     width: 190px;
-//   }
-//   th:nth-child(5) {
-//     width: 70px;
-//   }
-//   th:nth-last-child(2) {
-//     width: 90px;
-//   }
-//   th:nth-last-child(1) {
-//     width: 60px;
-//   }
-//   td:nth-child(1) {
-//     width: 50px;
-//   }
-//   td:nth-child(2) {
-//     width: 75px;
-//   }
-//   td:nth-child(3) {
-//     width: 108px;
-//   }
-//   td:nth-child(4) {
-//     width: 190px;
-//   }
-//   td:nth-child(5) {
-//     width: 70px;
-//   }
-//   td:nth-last-child(2) {
-//     width: 90px;
-//   }
-//   td:nth-last-child(1) {
-//     width: 60px;
-//   }
-// }
-.tbl-wrapper {
-  max-height: 60vh;
-  max-width: fit-content;
-  overflow-y: scroll;
-}
-
-.table-wrapper {
-  $border-color: darkgray;
-  width: 100%;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  grid-template-columns: 25% 75%;
-  border-top: 1px solid $border-color;
-  .tbl-left {
-    .column {
-      border-bottom: 1px solid $border-color;
-      border-left: 1px solid $border-color;
-      border-right: 2px solid $border-color;
-      overflow: hidden;
-      white-space: nowrap;
-    }
-  }
-  .tbl-body {
-    width: 100%;
-    overflow-y: hidden;
-    overflow-x: auto;
-    // border: 1px solid black;
-    margin: 0;
-    .tbl-content {
-      display: flex;
-      flex-direction: row;
-      // gap: 2px;
-      align-items: flex-start;
-      justify-content: flex-start;
-      .column {
-        border-bottom: 1px solid $border-color;
-        border-right: 1px solid $border-color;
-      }
-      .column:nth-child(3) {
-        width: 275px;
-      }
-    }
-  }
-}
 .table-container {
-  max-height: 40vh;
+  max-height: 60vh;
   overflow-y: scroll !important;
   table {
     thead {

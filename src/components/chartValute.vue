@@ -14,7 +14,9 @@
           Минимальное значение:
           <div class="tile is-parent">
             <div class="tile is-child">{{ MinMaxData.Min.Date }}</div>
-            <div class="tile is-child is-pulled-right is-size-6">
+            <div
+              class="tile is-child is-pulled-right is-size-6 has-text-weight-semibold"
+            >
               {{ MinMaxData.Min.Value }}
             </div>
           </div>
@@ -23,7 +25,9 @@
           Максимальное значение:
           <div class="tile is-parent">
             <div class="tile is-child">{{ MinMaxData.Max.Date }}</div>
-            <div class="tile is-child is-pulled-right is-size-6">
+            <div
+              class="tile is-child is-pulled-right is-size-6 has-text-weight-semibold"
+            >
               {{ MinMaxData.Max.Value }}
             </div>
           </div>
