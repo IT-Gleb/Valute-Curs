@@ -55,29 +55,34 @@
         />
         Выборка за период
       </label>
-      <div class="tile mt-4" v-if="rangeValue === 2">
-        <label class="dt mr-4">
-          <span class="is-size-7 has-text-weight-semibold">
-            Начальная дата:</span
-          >
-          <input
-            class="input is-small"
-            type="date"
-            name="fromDate"
-            v-model="fromDate"
-          />
-        </label>
-        <label class="dt">
-          <span class="is-size-7 has-text-weight-semibold">
-            Конечная дата:
-          </span>
-          <input
-            class="input is-small"
-            type="date"
-            name="toDate"
-            v-model="toDate"
-          />
-        </label>
+      <div class="tile is-parent mt-4" v-if="rangeValue === 2">
+        <div class="tile is-child is-4">
+          <label>
+            <span class="is-size-7 has-text-weight-semibold">
+              Начальная дата:</span
+            ><br />
+            <input
+              class="input is-small"
+              type="date"
+              name="fromDate"
+              v-model="fromDate"
+            />
+          </label>
+        </div>
+        &nbsp;&nbsp;&nbsp;
+        <div class="tile is-child is-4">
+          <label>
+            <span class="is-size-7 has-text-weight-semibold">
+              Конечная дата: </span
+            ><br />
+            <input
+              class="input is-small"
+              type="date"
+              name="toDate"
+              v-model="toDate"
+            />
+          </label>
+        </div>
       </div>
       <hr class="mt-2 mb-0" />
       <div

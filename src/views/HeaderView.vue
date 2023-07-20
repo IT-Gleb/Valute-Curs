@@ -1,17 +1,22 @@
 <template>
-  <header class="hero is-info is-small is-mobile">
-    <div class="hero-body">
-      <!-- <p class="title">Header</p>
+  <header class="is-fullwidth">
+    <section class="hero is-small is-info">
+      <div class="hero-body">
+        <!-- <p class="title">Header</p>
       <p class="subtitle">Еще бвао лко цуалдлуо лдулоак дул</p> -->
-      <div class="tile is-pulled-right">
-        <button class="button is-small is-success" @click="handleUpdate">
-          <span class="icon mr-1">
-            <i class="fas fa-spinner"></i>
-          </span>
-          Обновить
-        </button>
+        <div class="tile is-pulled-right">
+          <button
+            class="button is-small is-success is-rounded"
+            @click="handleUpdate"
+          >
+            <span class="icon mr-1">
+              <i class="fas fa-spinner"></i>
+            </span>
+            Обновить
+          </button>
+        </div>
       </div>
-    </div>
+    </section>
   </header>
 </template>
 

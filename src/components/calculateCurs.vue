@@ -1,52 +1,53 @@
 <template>
-  <div class="columns is-flex is-flex-wrap-wrap mb-0 is-mobile">
-    <div class="column is-full">
+  <div class="block mb-0">
+    <div class="tile is-12 mb-4">
       <div class="title is-small is-size-4">Рассчитать</div>
     </div>
-    <div class="column is-6 ml-0 mb-0">
+    <div class="tile is-12">
       <span class="is-size-7 has-text-weight-semibold is-clipped">
         Российский рубль
       </span>
-      <div class="control has-icons-left has-icons-right">
-        <input
-          class="input is-small"
-          type="number"
-          name="rubs"
-          id="idRub"
-          maxlength="12"
-          size="5"
-          min="0"
-          :value="valuteRub"
-          @input="($event) => calculateValute($event)"
-        />
-        <span class="icon is-small is-left">
-          <i class="fas fa-money-bill-wave"></i>
-        </span>
-      </div>
     </div>
-
-    <div class="column is-6 ml-0 mb-0">
+    <div class="control has-icons-left has-icons-right mb-2">
+      <input
+        class="input is-small"
+        type="number"
+        name="rubs"
+        id="idRub"
+        maxlength="12"
+        size="5"
+        min="0"
+        :value="valuteRub"
+        @input="($event) => calculateValute($event)"
+      />
+      <span class="icon is-small is-left">
+        <i class="fas fa-money-bill-wave"></i>
+      </span>
+    </div>
+    <div class="tile is-12 is-small">
       <span class="is-size-7 has-text-weight-semibold is-clipped">
         {{ valuteName }}
       </span>
-      <div class="control has-icons-left has-icons-right">
-        <input
-          class="input is-small"
-          type="number"
-          name="valute"
-          id="idValute"
-          maxlength="12"
-          size="5"
-          min="0"
-          :value="valuteValue"
-          @input="($event) => calculateRub($event)"
-        />
-        <span class="icon is-small is-left">
-          <i class="fas fa-money-bill"></i>
-        </span>
-      </div>
     </div>
-    <div class="column is-12 has-text-centered">
+    <div class="control has-icons-left has-icons-right">
+      <input
+        class="input is-small"
+        type="number"
+        name="valute"
+        id="idValute"
+        maxlength="12"
+        size="5"
+        min="0"
+        :value="valuteValue"
+        @input="($event) => calculateRub($event)"
+      />
+      <span class="icon is-small is-left">
+        <i class="fas fa-money-bill"></i>
+      </span>
+    </div>
+    <div
+      class="notification is-warning is-12 has-text-centered is-size-7 mt-2 mb-2"
+    >
       {{ TextMsg }}
       <span class="icon">
         <i :class="isChanged ? 'fa fa-arrow-up' : 'fa fa-arrow-down'"></i>
@@ -122,13 +123,13 @@ onBeforeMount(() => {
 onMounted(() => {});
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 span {
   white-space: nowrap;
   // max-width: 100px;
   // text-overflow: ellipsis;
 }
-.columns {
-  border-bottom: solid 1px rgba(127, 127, 127, 0.15);
-}
+// .columns {
+//   border-bottom: solid 1px rgba(127, 127, 127, 0.15);
+// }
 </style>

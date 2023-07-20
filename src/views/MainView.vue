@@ -1,18 +1,18 @@
 <template>
   <header-view></header-view>
   <div class="container">
-    <div class="columns is-vcentered is-desktop">
+    <div class="columns is-align-items-flex-start">
       <div class="column">
         <valute-table></valute-table>
       </div>
-      <div class="column is-align-self-center">
-        <div class="block mr-4">
+      <div class="column">
+        <div class="block">
           <data-valute-range></data-valute-range>
         </div>
-        <div class="block mr-4">
+        <div class="block">
           <chart-valute></chart-valute>
         </div>
-        <div class="block mr-4">
+        <div class="block">
           <chart-comp></chart-comp>
         </div>
       </div>
