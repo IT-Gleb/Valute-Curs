@@ -69,7 +69,7 @@
             />
           </label>
         </div>
-        &nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;
         <div class="tile is-child is-4">
           <label>
             <span class="is-size-7 has-text-weight-semibold">
@@ -169,12 +169,27 @@ export default {
             String(dt.getMonth() + 1).padStart(2, "0") +
             "-" +
             "01";
+
+          toDate.value =
+            String(dt.getFullYear()) +
+            "-" +
+            String(dt.getMonth() + 1).padStart(2, "0") +
+            "-" +
+            String(dt.getDate()).padStart(2, "0");
+
           // console.log(fromDate.value, toDate.value);
           break;
         case 2:
           // console.log(rangeValue.value);
           showWarn.value = false;
           let dt2 = new Date(Date.now());
+          toDate.value =
+            String(dt2.getFullYear()) +
+            "-" +
+            String(dt2.getMonth() + 1).padStart(2, "0") +
+            "-" +
+            String(dt2.getDate()).padStart(2, "0");
+
           dt2.setDate(dt2.getDate() - 7);
           fromDate.value =
             String(dt2.getFullYear()) +
@@ -182,6 +197,7 @@ export default {
             String(dt2.getMonth() + 1).padStart(2, "0") +
             "-" +
             String(dt2.getDate()).padStart(2, "0");
+
           break;
         default:
           showWarn.value = false;
@@ -194,6 +210,7 @@ export default {
       showWarn.value = false;
       let startDate = new Date(fromDate.value);
       let endDate = new Date(toDate.value);
+      let maxDate = new Date(Date.now());
       let strFromDate =
         String(startDate.getDate()).padStart(2, "0") +
         "/" +
@@ -207,10 +224,10 @@ export default {
         "/" +
         endDate.getFullYear();
       //   console.log(strFromDate, strEndDate, isSelectedValue.ID);
-      if (startDate >= endDate) {
+      if (startDate >= endDate || endDate > maxDate) {
         showWarn.value = true;
         TextMsg.value =
-          "Дата начала выборки должна быть меньше даты окончания.";
+          "Дата начала выборки должна быть меньше даты окончания. Или дата окончания должна быть меньше текущей даты";
         //console.log(TextMsg.value);
         return;
       }

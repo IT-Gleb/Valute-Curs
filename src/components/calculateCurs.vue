@@ -99,6 +99,14 @@ const calculateValute = (e) => {
   tmp = ((tmp * 100) / 100).toFixed(2);
   //console.log(tmp);
   valuteValue.value = tmp;
+  TextMsg.value =
+    " За: " +
+    valuteRub.value +
+    "р. получите: " +
+    valuteValue.value +
+    "  " +
+    valuteName.value;
+
   return tmp;
 };
 
@@ -110,6 +118,15 @@ const calculateRub = (e) => {
   valuteRub.value = tmp;
   //console.log(valuteRub.value);
   // return valuteRub.value;
+  TextMsg.value =
+    " За: " +
+    valuteValue.value +
+    "  " +
+    valuteName.value +
+    " получите: " +
+    valuteRub.value +
+    "р. ";
+
   return tmp;
 };
 
