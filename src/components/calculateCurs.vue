@@ -17,7 +17,7 @@
         maxlength="12"
         size="5"
         min="0"
-        :value="valuteRub"
+        :value.trim="valuteRub"
         @input="($event) => calculateValute($event)"
       />
       <span class="icon is-small is-left">
@@ -38,7 +38,7 @@
         maxlength="12"
         size="5"
         min="0"
-        :value="valuteValue"
+        :value.trim="valuteValue"
         @input="($event) => calculateRub($event)"
       />
       <span class="icon is-small is-left">
@@ -74,6 +74,7 @@ const store = useStore();
 let currentValute = {};
 const TextMsg = ref("");
 const isChanged = ref(false);
+const RusRubl = "Российский рубль";
 
 watchEffect(() => {
   currentValute = store.getters["GET_SELECTED_VALUTE"];
@@ -102,7 +103,9 @@ const calculateValute = (e) => {
   TextMsg.value =
     " За: " +
     valuteRub.value +
-    "р. получите: " +
+    " " +
+    RusRubl +
+    " получите: " +
     valuteValue.value +
     "  " +
     valuteName.value;
@@ -125,7 +128,9 @@ const calculateRub = (e) => {
     valuteName.value +
     " получите: " +
     valuteRub.value +
-    "р. ";
+    " " +
+    RusRubl +
+    ". ";
 
   return tmp;
 };

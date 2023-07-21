@@ -3,6 +3,7 @@
   <div class="container">
     <div class="columns is-align-items-flex-start">
       <div class="column">
+        <main-message></main-message>
         <valute-table></valute-table>
       </div>
       <div class="column">
@@ -30,6 +31,7 @@ import ValuteTable from "@/components/ValuteTable.vue";
 import ChartComp from "@/components/ChartComp.vue";
 import dataValuteRange from "@/components/dataValuteRange.vue";
 import chartValute from "@/components/chartValute.vue";
+import MainMessage from "@/components/MainMessage.vue";
 
 export default {
   name: "HomeView",
@@ -40,6 +42,7 @@ export default {
     ChartComp,
     dataValuteRange,
     chartValute,
+    MainMessage,
   },
 };
 </script>
