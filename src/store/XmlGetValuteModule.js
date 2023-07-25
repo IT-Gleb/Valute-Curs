@@ -1,5 +1,7 @@
 //Модуль обработки xml-запроса для выборки валюты за период
 
+import axios from "axios";
+
 export const XMLModule = {
   namespaced: true,
   state: () => {
@@ -48,6 +50,9 @@ export const XMLModule = {
       if (Array.isArray(data) && data.length > 0)
         state.DataValute.data = Array.from(data);
     },
+    SET_LOAD_DATA: (state, flag = false) => {
+      state.isLoadData = flag;
+    },
   },
   actions: {
     UPDATE_PARAM_VALUE: ({ commit }, paramObj) => {
@@ -57,7 +62,7 @@ export const XMLModule = {
     GET_XML_DATA: async ({ state, commit }) => {
       commit("SET_PARAM_URL");
 
-      state.isLoadData = true;
+      commit("SET_LOAD_DATA", true);
 
       let xmlHttp = new XMLHttpRequest();
       xmlHttp.onreadystatechange = function () {
@@ -88,7 +93,7 @@ export const XMLModule = {
             }
           });
           commit("SET_DATA", ParsedArray);
-          state.isLoadData = false;
+          commit("SET_LOAD_DATA", false);
           // console.log(
           //   state.paramObj.valuteName,
           //   state.DataValute.data
@@ -99,9 +104,70 @@ export const XMLModule = {
       //Дальше
       xmlHttp.open("GET", state.xmlUrl, true);
       xmlHttp.setRequestHeader("Accept", "*/*");
-      xmlHttp.setRequestHeader("Mode", "no-cors");
+      xmlHttp.setRequestHeader("mode", "no-cors");
       xmlHttp.setRequestHeader("Content-Type", "application/xml");
       xmlHttp.send();
     },
-  },
+    GET_DATA_XML_AXIOS: async ({ state, commit }) => {
+      commit("SET_PARAM_URL");
+      commit("SET_LOAD_DATA", true);
+      let url = state.xmlUrl;
+
+      const options = {
+        headers: {
+          "X-Requested-With": "XMLHttpRequest",
+          "Content-Type": "application/xml",
+          Accept: "*",
+          mode: "no-cors",
+        },
+        withCredentials: false,
+        responseType: "document",
+        // onDownloadProgress: (event) => {
+        //   console.log(event);
+        // },
+      };
+      let myres, ResultArray;
+      await axios
+        .get(url, options)
+        .then((response) => {
+          myres = response.data;
+        })
+        .catch((error) => {
+          commit("SET_LOAD_DATA", false);
+          console.log(error);
+        });
+      if (myres) {
+        let tmp_o = {};
+        let responseXML = myres.querySelectorAll("Record");
+        if (responseXML && responseXML.length > 0) {
+          ResultArray = [];
+          for (let i = 0; i < responseXML.length; i++) {
+            let dt1, nominal, value;
+            tmp_o = {};
+            if (responseXML.item(i).hasAttribute("Date")) {
+              dt1 = responseXML.item(i).getAttribute("Date");
+            }
+            //console.log(responseXML.item(i));
+            if (responseXML.item(i).hasChildNodes) {
+              nominal = responseXML.item(i).childNodes[0].textContent;
+              let v = responseXML.item(i).childNodes[1].textContent;
+              v = String(v).replace(",", ".");
+              value = Number(v).toFixed(2);
+            }
+            tmp_o.Date = dt1;
+            tmp_o.Value = value;
+            tmp_o.Nominal = nominal;
+            ResultArray.push(tmp_o);
+
+            // console.log(dt1, nominal, value);
+          }
+        }
+      }
+
+      if (ResultArray && ResultArray.length > 0)
+        commit("SET_DATA", ResultArray);
+      //console.log(res);
+      commit("SET_LOAD_DATA", false);
+    }, // end of GET_DATA_XML_AXIOS
+  }, // end of actions
 };

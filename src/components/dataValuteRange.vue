@@ -241,7 +241,9 @@ export default {
       };
       // console.log(store.state.xmlData.paramObj);
       store.dispatch("xmlData/UPDATE_PARAM_VALUE", paramReport);
-      store.dispatch("xmlData/GET_XML_DATA");
+
+      //store.dispatch("xmlData/GET_XML_DATA");
+      store.dispatch("xmlData/GET_DATA_XML_AXIOS");
     };
 
     return {
