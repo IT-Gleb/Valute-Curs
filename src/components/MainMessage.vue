@@ -9,7 +9,19 @@
         </span>
       </span>
 
-      <button class="delete" aria-label="delete" @click="handleButton"></button>
+      <button
+        class="button is-small is-rounded is-success"
+        :title="isShowBody ? 'Свернуть' : 'Развернуть'"
+        @click="handleButton"
+      >
+        <span class="icon">
+          <i
+            :class="
+              isShowBody ? 'fas fa-arrow-circle-up' : 'fas fa-arrow-circle-down'
+            "
+          ></i>
+        </span>
+      </button>
     </div>
     <div v-if="isShowBody" class="message-body">
       <p>Проект использует</p>
