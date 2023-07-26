@@ -9,26 +9,75 @@
       <canvas ref="ctxChart"></canvas>
     </div>
     <div class="notification is-light mt-1 mb-0 has-text-centered is-size-7">
-      <div class="columns">
-        <div class="column">
-          Минимальное значение:
-          <div class="tile is-parent">
-            <div class="tile is-child">{{ MinMaxData.Min.Date }}</div>
-            <div
-              class="tile is-child is-pulled-right is-size-6 has-text-weight-semibold"
-            >
-              {{ MinMaxData.Min.Value }}
+      <div class="tile is-ancestor is-vertical">
+        <div class="tile">
+          <div class="tile is-parent is-12">
+            <div class="tile is-child">
+              <span class="title is-size-6">Данные за выбранный период</span>
             </div>
           </div>
         </div>
-        <div class="column">
-          Максимальное значение:
-          <div class="tile is-parent">
-            <div class="tile is-child">{{ MinMaxData.Max.Date }}</div>
-            <div
-              class="tile is-child is-pulled-right is-size-6 has-text-weight-semibold"
-            >
-              {{ MinMaxData.Max.Value }}
+        <div class="tile">
+          <div class="tile is-parent is-12">
+            <div class="tile is-child">
+              <div
+                class="tile is-child subtitle is-size-7 has-background-primary has-text-light p-2"
+              >
+                Минимальное <br />
+                значение:
+              </div>
+              <div class="tile is-child subtitle is-size-7 p-2">
+                {{ MinMaxData.Min.Date }}
+              </div>
+              <div
+                class="tile is-child subtitle is-size-6 has-text-weight-semibold"
+              >
+                {{ MinMaxData.Min.Value }}
+              </div>
+            </div>
+            <div class="tile is-child">
+              <div
+                class="tile is-child subtitle is-size-7 has-background-primary has-text-light p-2"
+              >
+                Максимальное <br />
+                значение:
+              </div>
+              <div class="tile is-child subtitle is-size-7 p-2">
+                {{ MinMaxData.Max.Date }}
+              </div>
+              <div
+                class="tile is-child subtitle is-size-6 has-text-weight-semibold"
+              >
+                {{ MinMaxData.Max.Value }}
+              </div>
+            </div>
+            <div class="tile is-child">
+              <div
+                class="tile is-child subtitle is-size-7 has-background-primary has-text-light p-2"
+              >
+                Среднее <br />
+                значение:
+              </div>
+              <div class="tile is-child subtitle is-size-7 p-2">&nbsp;</div>
+              <div
+                class="tile is-child subtitle is-size-6 has-text-weight-semibold"
+              >
+                {{ MinMaxData.Average.Value }}
+              </div>
+            </div>
+            <div class="tile is-child">
+              <div
+                class="tile is-child subtitle is-size-7 has-background-primary has-text-light p-2"
+              >
+                Медианное <br />
+                значение:
+              </div>
+              <div class="tile is-child subtitle is-size-7 p-2">&nbsp;</div>
+              <div
+                class="tile is-child subtitle is-size-6 has-text-weight-semibold"
+              >
+                {{ MinMaxData.Median.Value }}
+              </div>
             </div>
           </div>
         </div>
@@ -54,6 +103,7 @@ $ctxWidth: 900 * 1px;
 <script>
 import { Chart } from "chart.js";
 import { watchEffect, ref, onMounted, onUnmounted, defineComponent } from "vue";
+import { getAverageFromArray, getMedianFromArray } from "@/lib";
 import { useStore } from "vuex";
 import MySpinner from "@/components/MySpinner.vue";
 
@@ -75,26 +125,35 @@ export default defineComponent({
     let MinMaxData = ref({
       Min: { Date: 0, Value: 0 },
       Max: { Date: 0, Value: 0 },
+      Median: { Value: 0 },
+      Average: { Value: 0 },
     });
     // const MinMaxText = ref("");
 
     function minFromArray(paramArray) {
-      let res = { Min: { Date: 0, Value: 0 }, Max: { Date: 0, Value: 0 } };
+      let res = {
+        Min: { Date: 0, Value: 0 },
+        Max: { Date: 0, Value: 0 },
+        Median: { Value: 0 },
+        Average: { Value: 0 },
+      };
       let temp = [];
 
       if (Array.isArray(paramArray) && paramArray.length > 0) {
         temp = paramArray.map((item) => {
-          return item.Value;
+          return parseFloat(String(item.Value).replace(",", ".")).toFixed(2);
         });
         if (temp.length > 0) {
           let m = Math.min(...temp);
           let top = Math.max(...temp);
-          let indMin = temp.indexOf(String(m.toFixed(2)));
+          // console.log(temp);
+          let indMin = temp.indexOf(m.toFixed(2));
 
-          let indMax = temp.indexOf(String(top.toFixed(2)));
+          let indMax = temp.indexOf(top.toFixed(2));
+          // console.log(paramArray, m, top, indMin, indMax);
 
           res.Min.Value = m;
-          //          console.log(m, top, indMin, indMax);
+
           res.Min.Date = paramArray[indMin].Date;
           res.Max.Value = top;
           res.Max.Date = paramArray[indMax].Date;
@@ -183,8 +242,10 @@ export default defineComponent({
           return item.Date;
         });
 
-        //Get min max value;
+        //Get min max average median value;
         MinMaxData.value = minFromArray(tmpData);
+        MinMaxData.value.Average.Value = getAverageFromArray(dataVal);
+        MinMaxData.value.Median.Value = getMedianFromArray(dataVal);
         //console.log(MinMaxData.value);
 
         //        console.log(dataVal);

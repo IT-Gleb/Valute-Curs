@@ -126,3 +126,57 @@ export function setDateValue(paramDate) {
     String(current.getDate()).padStart(2, "0");
   return res;
 }
+
+export function getAverageFromArray(paramArray) {
+  let res = 0;
+  if (Array.isArray(paramArray) && paramArray.length > 0) {
+    //console.log(paramArray);
+    res = paramArray.reduce((currentSum, currentItem) => {
+      return currentSum + Number(currentItem);
+    }, 0);
+    res = (res / paramArray.length).toFixed(2);
+    //console.log(res);
+  }
+
+  return res;
+}
+
+export function getMedianFromArray(paramArray) {
+  let res = 0;
+  let tmp_a = [];
+  let isChetnoe = false;
+  let index1 = -1;
+  let index2 = -1;
+  let workArray = [];
+
+  if (Array.isArray(paramArray) && paramArray.length > 0) {
+    workArray = paramArray.slice(0);
+    //Отсортировать массив
+    tmp_a = workArray.sort((a, b) => {
+      if (a - b > b - a) return 1;
+      else return -1;
+    });
+    //    console.log(tmp_a);
+    //Проверить на четное/нечетное
+    isChetnoe = tmp_a.length % 2 === 0 ? true : false;
+    //console.log(isChetnoe);
+    let a, b;
+    if (isChetnoe) {
+      index1 = Math.ceil(tmp_a.length / 2);
+      index2 = index1 + 1;
+      a = parseFloat(tmp_a[index1]).toFixed(2);
+      b = parseFloat(tmp_a[index2]).toFixed(2);
+
+      //    console.log(tmp_a.length, index1, index2, a, b);
+
+      res = parseFloat((Number(a) + Number(b)) / 2).toFixed(2);
+    } else {
+      index1 = Math.ceil(tmp_a.length / 2);
+      res = parseFloat(tmp_a[index1]).toFixed(2);
+      //  console.log(tmp_a.length, index1, res);
+    }
+    //console.log(tmp_a);
+  }
+
+  return res;
+}
