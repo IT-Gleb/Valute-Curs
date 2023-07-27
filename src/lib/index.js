@@ -162,7 +162,7 @@ export function getMedianFromArray(paramArray) {
     //console.log(isChetnoe);
     let a, b;
     if (isChetnoe) {
-      index1 = Math.ceil(tmp_a.length / 2);
+      index1 = Math.floor(tmp_a.length / 2);
       index2 = index1 + 1;
       a = parseFloat(tmp_a[index1]).toFixed(2);
       b = parseFloat(tmp_a[index2]).toFixed(2);
@@ -173,7 +173,7 @@ export function getMedianFromArray(paramArray) {
     } else {
       index1 = Math.ceil(tmp_a.length / 2);
       res = parseFloat(tmp_a[index1]).toFixed(2);
-      //  console.log(tmp_a.length, index1, res);
+      // console.log(tmp_a.length, index1, res);
     }
     //console.log(tmp_a);
   }
