@@ -1,7 +1,13 @@
 <template>
   <article class="message mt-2 is-success mb-0">
     <div class="message-header">
-      <p>Проект - Курс Валют</p>
+      <p>
+        <span class="icon mr-2">
+          <i class="fas fa-info-circle"></i>
+        </span>
+
+        Проект - Курс Валют
+      </p>
       <span class="is-size-7 is-pulled-right"
         >Ознакомится
         <span class="icon">
@@ -10,7 +16,7 @@
       </span>
 
       <button
-        class="button is-small is-rounded is-success"
+        class="button is-middle is-rounded is-success"
         :title="isShowBody ? 'Свернуть' : 'Развернуть'"
         @click="handleButton"
       >

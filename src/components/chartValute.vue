@@ -101,7 +101,17 @@ $ctxWidth: 900 * 1px;
 </style>
 
 <script>
-import { Chart } from "chart.js";
+// import {
+//   Chart,
+//   CategoryScale,
+//   LinearScale,
+//   BarElement,
+//   Title,
+//   Tooltip,
+//   Legend,
+// } from "chart.js/auto";
+
+import { Chart } from "chart.js/auto";
 import { watchEffect, ref, onMounted, onUnmounted, defineComponent } from "vue";
 import { getAverageFromArray, getMedianFromArray } from "@/lib";
 import { useStore } from "vuex";
@@ -191,6 +201,7 @@ export default defineComponent({
           },
           scales: {
             y: {
+              grace: 4,
               beginAtZero: false,
             },
           },
@@ -215,6 +226,15 @@ export default defineComponent({
         ctxValute = null;
       }
       ctxValute = new Chart(ctxChart.value, config);
+      // ctxValute.register(
+      //   CategoryScale,
+      //   LinearScale,
+      //   BarElement,
+      //   Title,
+      //   Tooltip,
+      //   Legend
+      // );
+
       //------------------------------------------
     }
 

@@ -47,6 +47,7 @@
 
 <script setup>
 import { Chart } from "chart.js/auto";
+
 import { onBeforeMount, onMounted, ref, watchEffect } from "vue";
 import MySpinner from "./MySpinner.vue";
 import { randomInteger, backColors } from "@/lib";
