@@ -44,6 +44,9 @@ export const XMLModule = {
       let tmpURL =
         state.proxyURL +
         `https://www.cbr.ru/scripts/XML_dynamic.asp?date_req1=${state.paramObj.fromDate}&date_req2=${state.paramObj.toDate}&VAL_NM_RQ=${state.paramObj.valuteCode}`;
+
+      tmpURL = `php_x/cbr_xml.php?currency=abc&dt1=${state.paramObj.fromDate}&dt2=${state.paramObj.toDate}&id=${state.paramObj.valuteCode}`;
+
       state.xmlUrl = tmpURL;
     },
     SET_DATA: (state, data) => {
@@ -113,6 +116,8 @@ export const XMLModule = {
       commit("SET_LOAD_DATA", true);
       let url = state.xmlUrl;
 
+      // console.log(url);
+
       const options = {
         headers: {
           "X-Requested-With": "XMLHttpRequest",
@@ -151,7 +156,7 @@ export const XMLModule = {
             if (responseXML.item(i).hasChildNodes) {
               nominal = responseXML.item(i).childNodes[0].textContent;
               let v = responseXML.item(i).childNodes[1].textContent;
-              v = String(v).replace(",", ".");
+              v = String(v).replace(",", ".").padEnd(2, "0");
               value = Number(v).toFixed(2);
             }
             tmp_o.Date = dt1;

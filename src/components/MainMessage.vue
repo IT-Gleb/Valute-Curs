@@ -50,8 +50,14 @@
         отдельной валюты.
       </p>
       <p>
-        Столкнулся с проблемой CORS. Победить не удалось. Вышел из положения
-        благодаря сервису -
+        Столкнулся с технологией CORS. Победить
+        <span class="title is-size-6 has-text-info">УДАЛОСЬ</span>. На локальном
+        сервере проблем с CORS запросами не наблюдается.
+        <span class="icon"> <i class="fas fa-thumbs-up"></i></span>
+      </p>
+
+      <p>
+        Для работы без сервера Вышел из положения благодаря сервису -
         <a href="https://cors-anywhere.herokuapp.com" target="_blank"
           >https://cors-anywhere.herokuapp.com</a
         >
