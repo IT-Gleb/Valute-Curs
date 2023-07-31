@@ -18,10 +18,21 @@ export const XMLModule = {
       `https://www.cbr.ru/scripts/XML_dynamic.asp?date_req1=01/04/2023&date_req2=30/04/2023&VAL_NM_RQ=R01235`;
     let isLoadData = false;
     const DataValute = { data: [] };
+    let isServerUrlUse = true;
 
-    return { paramObj, proxyURL, xmlUrl, isLoadData, DataValute };
+    return {
+      paramObj,
+      proxyURL,
+      xmlUrl,
+      isLoadData,
+      DataValute,
+      isServerUrlUse,
+    };
   },
   getters: {
+    GET_SERVER_URL_USE: (state) => {
+      return state.isServerUrlUse;
+    },
     GET_IS_LOAD_DATA: (state) => {
       return state.isLoadData;
     },
@@ -36,16 +47,24 @@ export const XMLModule = {
     },
   },
   mutations: {
+    SET_SERVER_URL_USE: (state, useUrl = true) => {
+      state.isServerUrlUse = useUrl;
+    },
+
     SET_PARAM_OBJ: (state, paramObj) => {
       state.paramObj = Object.assign({}, paramObj);
       // console.log(state.paramObj);
     },
     SET_PARAM_URL: (state) => {
-      let tmpURL =
-        state.proxyURL +
-        `https://www.cbr.ru/scripts/XML_dynamic.asp?date_req1=${state.paramObj.fromDate}&date_req2=${state.paramObj.toDate}&VAL_NM_RQ=${state.paramObj.valuteCode}`;
-
-      tmpURL = `php_x/cbr_xml.php?currency=abc&dt1=${state.paramObj.fromDate}&dt2=${state.paramObj.toDate}&id=${state.paramObj.valuteCode}`;
+      let tmpURL;
+      let isServer = state.isServerUrlUse;
+      if (!isServer) {
+        tmpURL =
+          state.proxyURL +
+          `https://www.cbr.ru/scripts/XML_dynamic.asp?date_req1=${state.paramObj.fromDate}&date_req2=${state.paramObj.toDate}&VAL_NM_RQ=${state.paramObj.valuteCode}`;
+      } else {
+        tmpURL = `php_x/cbr_xml.php?currency=abc&dt1=${state.paramObj.fromDate}&dt2=${state.paramObj.toDate}&id=${state.paramObj.valuteCode}`;
+      }
 
       state.xmlUrl = tmpURL;
     },

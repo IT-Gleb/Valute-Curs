@@ -91,17 +91,36 @@
       >
         {{ TextMsg }}
       </div>
-      <div class="tile mt-3 is-align-self-flex-end" v-if="rangeValue != -1">
-        <button
-          class="button is-small is-primary is-rounded"
-          @click="handleReport"
-          title="Сформировать отчет"
-        >
-          <span class="icon mr-1">
-            <i class="fas fa-chart-pie"></i>
-          </span>
-          Получить данные
-        </button>
+      <div
+        class="tile is-parent mt-3 is-align-self-flex-end"
+        v-if="rangeValue != -1"
+      >
+        <div class="tile is-child is-6">
+          <label class="checkbox has-text-info is-size-7 is-unselectable">
+            <input
+              type="checkbox"
+              name="ServerCheck"
+              id="ServerCheck"
+              :checked="isServer"
+              v-model="isServer"
+              @change="handleIsServer"
+            />
+            Используется сервер
+          </label>
+        </div>
+        <div class="tile is-child is-1"></div>
+        <div class="tile is-child is-2 pr-2">
+          <button
+            class="button is-small is-primary is-rounded"
+            @click="handleReport"
+            title="Сформировать отчет"
+          >
+            <span class="icon mr-1">
+              <i class="fas fa-chart-pie"></i>
+            </span>
+            Получить данные
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -116,6 +135,7 @@ export default {
   name: "rangeDate",
   setup() {
     let rangeValue = ref(-1);
+    let isServer = ref(true);
     const store = useStore();
 
     let isSelectedValue = reactive({});
@@ -133,6 +153,10 @@ export default {
 
     const checkSelectedValue = (paramObj) => {
       return isObject_empty(paramObj);
+    };
+
+    const handleIsServer = (event) => {
+      store.commit("xmlData/SET_SERVER_URL_USE", isServer.value);
     };
 
     const checkDates = () => {
@@ -248,6 +272,7 @@ export default {
 
     return {
       rangeValue,
+      isServer,
       isThisShow,
       NameValute,
       fromDate,
@@ -255,6 +280,7 @@ export default {
       TextMsg,
       showWarn,
       handleReport,
+      handleIsServer,
     };
   },
 };
