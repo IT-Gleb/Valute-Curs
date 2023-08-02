@@ -17,6 +17,7 @@
 3.  Vue-router.
 4.  Библиотека **Chart js** - для визуализации.
 5.  [Курсы ЦБ РФ в XML и JSON, API](https://www.cbr-xml-daily.ru/)
+6.  CSS framework BULMA.
 
 ---
 
