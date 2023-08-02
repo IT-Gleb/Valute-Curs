@@ -201,7 +201,7 @@ export default defineComponent({
           },
           scales: {
             y: {
-              grace: 4,
+              grace: 2,
               beginAtZero: false,
             },
           },
